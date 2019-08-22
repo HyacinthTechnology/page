@@ -23,8 +23,7 @@ use HyacinthTechnology\Pager;
      * $PageCount 数据库查询的总记录数
      */
 	function pager($page,$PageCount){
-        require './src/Pager.php';
-        $pag = new \HyacinthTechnology\Pager();
+        $pag = new Pager();
         $pag->AbsolutePage = $page; //当前锁定页
         $PageCount = ($PageCount + 10 - 1) / 10; //计算页数
         $pag->PageCount = intval($PageCount);   //总页数量
