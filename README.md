@@ -1,5 +1,5 @@
 # 关于
-PHP-Curl是一个轻量级的网络操作类，实现GET、POST、UPLOAD、DOWNLOAD常用操作，支持方法链写法
+PHP-page是一个轻量级的分页类
 
 
 # 需求
@@ -10,68 +10,36 @@ PHP-Curl是一个轻量级的网络操作类，实现GET、POST、UPLOAD、DOWNL
 composer require chenbool/curl
 ```
 ```php
-use chenbool\Curl;
+use HyacinthTechnology\Pager;
 ```
 
 
 # 示例
 ```php
-$curl = new Curl;
-```
-或者
-```php
-$curl = Curl::init();
-```
-
-
-##### GET:
-```php
-$curl->url(目标网址);
-```
-
-
-##### POST:
-```php
-$curl->post(变量名, 变量值)->post(多维数组)->url(目标网址);
-```
-
-
-##### UPLOAD:
-```php
-$curl->post(多维数组)->file($_FILE字段, 本地路径, 文件类型, 原始名称)->url(目标网址);
-```
-
-
-##### DOWNLOAD:
-```php
-$curl->url(文件地址)->save(保存路径);
-```
-
-
-##### 配置
-参考:http://php.net/manual/en/function.curl-setopt.php
-
-```php
-$curl->set('CURLOPT_选项', 值)->post(多维数组)->url(目标网址);
-```
-
-##### 自动重试
-```php
-// 出错自动重试N次(默认0)
-$curl->retry(3)->post(多维数组)->url(目标网址);
-```
-
-##### 结果
-```php
-// 任务结果状态
-if ($curl->error()) {
-    echo $curl->message();
-} else {
-    // 任务进程信息
-    $info = $curl->info();
-    
-    // 任务结果内容
-    $content = $curl->data();
-}
-
+<?php
+    /*
+     * 数据分页
+     * $page 当前页数
+     * $PageCount 数据库查询的总记录数
+     */
+	function pager($page,$PageCount){
+        require './src/Pager.php';
+        $pag = new \HyacinthTechnology\Pager();
+        $pag->AbsolutePage = $page; //当前锁定页
+        $PageCount = ($PageCount + 10 - 1) / 10; //计算页数
+        $pag->PageCount = intval($PageCount);   //总页数量
+//        $pag->FirstPageLink = '/home/1'; //首页链接
+        $pag->Size = 10;   //页码尺寸
+		/*
+		 * ToString(参数)
+		 * 1 分页
+		 * 2 简易分页
+		 * 3 只显示、上一页和下一页
+		 */
+		$pageCodeHtml = $pag->ToString(1); //获得分页过后的html
+        echo $pageCodeHtml; //将输出以下内容
+    }
+	//接受页面传递过来的页码
+	$pager = $_GET['page'];
+	 pager($pager,150);
 ```
