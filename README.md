@@ -7,7 +7,7 @@ PHP-page是一个轻量级的分页类
 
 # 安装
 ```shell
-composer require chenbool/curl
+composer require hyacinth/page
 ```
 ```php
 use HyacinthTechnology\Pager;
